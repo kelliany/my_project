@@ -303,6 +303,32 @@
                     </td>
                     <td class="td-do"><a href="javascript:;" class="product-delect">删除</a></td>
                 </tr>
+                <tr>
+                    <td class="td-check"><Checkbox></Checkbox></td>
+                    <td class="td-product"><img src="" width="98" height="98">
+                        <div class="product-info">
+                            <h6>【斯文】甘油&nbsp;|&nbsp;丙三醇</h6>
+                            <p>品牌：韩国skc&nbsp;&nbsp;产地：韩国</p>
+                            <p>规格/纯度:99.7%&nbsp;&nbsp;起定量：215千克</p>
+                            <p>配送仓储：上海仓海仓储</p>
+                        </div>
+                        <div class="clearfix"></div>
+                    </td>
+                    <td class="td-num">
+                        <div class="product-num">
+                            <a href="javascript:;" class="num-reduce num-do fl"><span></span></a>
+                            <input type="text" class="num-input" value="1">
+                            <a href="javascript:;" class="num-add num-do fr"><span></span></a>
+                        </div>
+                    </td>
+                    <td class="td-price">
+                        <p class="red-text">￥<span class="price-text">800</span>.00</p>
+                    </td>
+                    <td class="td-total">
+                        <p class="red-text">￥<span class="total-text">800</span>.00</p>
+                    </td>
+                    <td class="td-do"><a href="javascript:;" class="product-delect">删除</a></td>
+                </tr>
                 </tbody></table>
         </div>
         <div class="cart-product-info">
