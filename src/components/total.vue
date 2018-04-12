@@ -32,8 +32,6 @@
     }
     img{vertical-align: middle;}
     .page-shopping-cart {
-        width: 1200px;
-        margin: 50px auto;
         font-size: 14px;
         border: 1px solid #e3e3e3;
         border-top: 2px solid #317ee7; }
@@ -244,7 +242,7 @@
     <div class="page-shopping-cart" id="shopping-cart">
         <h4 class="cart-title">购物清单</h4>
         <div class="cart-product-title clearfix">
-            <div class="td-check fl"><span class="check-span fl check-all"></span>全选</div>
+            <div class="td-check fl"><Checkbox></Checkbox>全选</div>
             <div class="td-product fl">商品</div>
             <div class="td-num fl">数量</div>
             <div class="td-price fl">单价(元)</div>
@@ -254,7 +252,7 @@
         <div class="cart-product clearfix">
             <table>
                 <tbody><tr>
-                    <td class="td-check"><span class="check-span"></span></td>
+                    <td class="td-check"><Checkbox></Checkbox></span></td>
                     <td class="td-product"><img src="" width="98" height="98">
                         <div class="product-info">
                             <h6>【斯文】甘油&nbsp;|&nbsp;丙三醇</h6>
@@ -280,7 +278,7 @@
                     <td class="td-do"><a href="javascript:;" class="product-delect">删除</a></td>
                 </tr>
                 <tr>
-                    <td class="td-check"><span class="check-span check-true"></span></td>
+                    <td class="td-check"><Checkbox></Checkbox></td>
                     <td class="td-product"><img src="" width="98" height="98">
                         <div class="product-info">
                             <h6>【斯文】甘油&nbsp;|&nbsp;丙三醇</h6>
