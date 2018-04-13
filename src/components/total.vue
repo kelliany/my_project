@@ -239,7 +239,7 @@
 </style>
 
 <template>
-    <div class="page-shopping-cart" id="shopping-cart">
+    <div class="page-shopping-cart" id="total">
         <h4 class="cart-title">购物清单</h4>
         <div class="cart-product-title clearfix">
             <div class="td-check fl"><Checkbox></Checkbox>全选</div>
@@ -303,29 +303,29 @@
                     </td>
                     <td class="td-do"><a href="javascript:;" class="product-delect">删除</a></td>
                 </tr>
-                <tr>
-                    <td class="td-check"><Checkbox></Checkbox></td>
+                <tr v-for="item in productList">
+                    <td class="td-check"><Checkbox @click="item.select=!item.select"></Checkbox></td>
                     <td class="td-product"><img src="" width="98" height="98">
                         <div class="product-info">
-                            <h6>【斯文】甘油&nbsp;|&nbsp;丙三醇</h6>
-                            <p>品牌：韩国skc&nbsp;&nbsp;产地：韩国</p>
-                            <p>规格/纯度:99.7%&nbsp;&nbsp;起定量：215千克</p>
-                            <p>配送仓储：上海仓海仓储</p>
+                            <h6>{{item.pro_name}}</h6>
+                            <p>品牌：{{item.pro_brand}}&nbsp;&nbsp;产地：{{item.pro_place}}</p>
+                            <p>规格/纯度:{{item.pro_purity}}&nbsp;&nbsp;起定量：{{item.pro_min}}</p>
+                            <p>配送仓储：{{item.pro_depot}}</p>
                         </div>
                         <div class="clearfix"></div>
                     </td>
                     <td class="td-num">
                         <div class="product-num">
-                            <a href="javascript:;" class="num-reduce num-do fl"><span></span></a>
-                            <input type="text" class="num-input" value="1">
-                            <a href="javascript:;" class="num-add num-do fr"><span></span></a>
+                            <a href="javascript:;" class="num-reduce num-do fl" @click="item.pro_num--"><span></span></a>
+                            <input type="text" class="num-input" v-model="item.pro_num">
+                            <a href="javascript:;" class="num-add num-do fr" @click="item.pro_num++"><span></span></a>
                         </div>
                     </td>
                     <td class="td-price">
-                        <p class="red-text">￥<span class="price-text">800</span>.00</p>
+                        <p class="red-text">￥<span class="price-text">{{item.pro_price.toFixed(2)}}</span></p>
                     </td>
                     <td class="td-total">
-                        <p class="red-text">￥<span class="total-text">800</span>.00</p>
+                        <p class="red-text">￥<span class="total-text">{{item.pro_price*item.pro_num}}</span>.00</p>
                     </td>
                     <td class="td-do"><a href="javascript:;" class="product-delect">删除</a></td>
                 </tr>
@@ -335,8 +335,8 @@
             <a class="delect-product" href="javascript:;"><span></span>删除所选商品</a>
             <a class="keep-shopping" href="#"><span></span>继续购物</a>
             <a class="btn-buy fr" href="javascript:;">去结算</a>
-            <p class="fr product-total">￥<span>1600</span></p>
-            <p class="fr check-num"><span>2</span>件商品总计（不含运费）：</p>
+            <p class="fr product-total">￥<span>{{getTotal.totalPrice}}</span></p>
+            <p class="fr check-num"><span>{{getTotal.totalNum}}</span>件商品总计（不含运费）：</p>
         </div>
         <div class="cart-worder clearfix">
             <a href="javascript:;" class="choose-worder fl"><span></span>绑定跟单员</a>
@@ -348,5 +348,41 @@
 
 
 <script>
-    
+    export default{
+        name: 'total',
+        data() {
+            return {productList:[
+                {
+                    'pro_name': '【斯文】甘油 | 丙三醇',//产品名称
+                    'pro_brand': 'skc',//品牌名称
+                    'pro_place': '泰国',//产地
+                    'pro_purity': '99.7%',//规格
+                    'pro_min': "215千克",//最小起订量
+                    'pro_depot': '上海仓海仓储',//所在仓库
+                    'pro_num': 3,//数量
+                    'pro_img': '../../images/ucenter/testimg.jpg',//图片链接
+                    'pro_price': 960//单价
+                }
+            ]}
+        },
+        computed: {
+            isSelectAll:function(){
+                return this.productList.every(function(val){ return val.select })
+            },
+            getTotal:function(){
+                var _proList = this.productList.filter(function(val){return val.select}),totalPrice=0;
+                for(var i=0,len=_proList.length;i<len;i++){
+                    totalPrice+=_proList[i].pro_num*_proList[i].pro_price;
+                }
+                return {totalNum:_proList.length,totalPrice:totalPrice}
+            }
+        },
+        methods: {},
+        mounted:function(){
+            var _this = this;
+            this.productList.map(function(item){
+                _this.$set(item,'select',true);
+            })
+        }
+    }
 </script>
