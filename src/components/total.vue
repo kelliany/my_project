@@ -242,7 +242,7 @@
     <div class="page-shopping-cart" id="total">
         <h4 class="cart-title">购物清单</h4>
         <div class="cart-product-title clearfix">
-            <div class="td-check fl"><Checkbox></Checkbox>全选</div>
+            <div class="td-check fl"><Checkbox :indeterminate="indeterminate" :value="selectAll" @click.prevent.native="handleSelectAll"></Checkbox>全选</div>
             <div class="td-product fl">商品</div>
             <div class="td-num fl">数量</div>
             <div class="td-price fl">单价(元)</div>
@@ -251,60 +251,9 @@
         </div>
         <div class="cart-product clearfix">
             <table>
-                <tbody><tr>
-                    <td class="td-check"><Checkbox></Checkbox></span></td>
-                    <td class="td-product"><img src="" width="98" height="98">
-                        <div class="product-info">
-                            <h6>【斯文】甘油&nbsp;|&nbsp;丙三醇</h6>
-                            <p>品牌：韩国skc&nbsp;&nbsp;产地：韩国</p>
-                            <p>规格/纯度:99.7%&nbsp;&nbsp;起定量：215千克</p>
-                            <p>配送仓储：上海仓海仓储</p>
-                        </div>
-                        <div class="clearfix"></div>
-                    </td>
-                    <td class="td-num">
-                        <div class="product-num">
-                            <a href="javascript:;" class="num-reduce num-do fl"><span></span></a>
-                            <input type="text" class="num-input" value="3">
-                            <a href="javascript:;" class="num-add num-do fr"><span></span></a>
-                        </div>
-                    </td>
-                    <td class="td-price">
-                        <p class="red-text">￥<span class="price-text">800</span>.00</p>
-                    </td>
-                    <td class="td-total">
-                        <p class="red-text">￥<span class="total-text">800</span>.00</p>
-                    </td>
-                    <td class="td-do"><a href="javascript:;" class="product-delect">删除</a></td>
-                </tr>
-                <tr>
-                    <td class="td-check"><Checkbox></Checkbox></td>
-                    <td class="td-product"><img src="" width="98" height="98">
-                        <div class="product-info">
-                            <h6>【斯文】甘油&nbsp;|&nbsp;丙三醇</h6>
-                            <p>品牌：韩国skc&nbsp;&nbsp;产地：韩国</p>
-                            <p>规格/纯度:99.7%&nbsp;&nbsp;起定量：215千克</p>
-                            <p>配送仓储：上海仓海仓储</p>
-                        </div>
-                        <div class="clearfix"></div>
-                    </td>
-                    <td class="td-num">
-                        <div class="product-num">
-                            <a href="javascript:;" class="num-reduce num-do fl"><span></span></a>
-                            <input type="text" class="num-input" value="1">
-                            <a href="javascript:;" class="num-add num-do fr"><span></span></a>
-                        </div>
-                    </td>
-                    <td class="td-price">
-                        <p class="red-text">￥<span class="price-text">800</span>.00</p>
-                    </td>
-                    <td class="td-total">
-                        <p class="red-text">￥<span class="total-text">800</span>.00</p>
-                    </td>
-                    <td class="td-do"><a href="javascript:;" class="product-delect">删除</a></td>
-                </tr>
-                <tr v-for="item in productList">
-                    <td class="td-check"><Checkbox @click="item.select=!item.select"></Checkbox></td>
+                <tbody>
+                <tr v-for="(item,index) in productList">
+                    <td class="td-check"><Checkbox v-model="item.select" @on-change="checkAllChange"></Checkbox></td>
                     <td class="td-product"><img src="" width="98" height="98">
                         <div class="product-info">
                             <h6>{{item.pro_name}}</h6>
@@ -351,7 +300,10 @@
     export default{
         name: 'total',
         data() {
-            return {productList:[
+            return {
+                indeterminate: true,
+                selectAll: false,
+                productList:[
                 {
                     'pro_name': '【斯文】甘油 | 丙三醇',//产品名称
                     'pro_brand': 'skc',//品牌名称
@@ -362,12 +314,25 @@
                     'pro_num': 3,//数量
                     'pro_img': '../../images/ucenter/testimg.jpg',//图片链接
                     'pro_price': 960//单价
+                },
+                {
+                    'pro_name': '丙三醇',//产品名称
+                    'pro_brand': 'skc',//品牌名称
+                    'pro_place': '中国',//产地
+                    'pro_purity': '99.7%',//规格
+                    'pro_min': "215千克",//最小起订量
+                    'pro_depot': '上海仓海仓储',//所在仓库
+                    'pro_num': 1,//数量
+                    'pro_img': '../../images/ucenter/testimg.jpg',//图片链接
+                    'pro_price': 800//单价
                 }
             ]}
+            
+
         },
         computed: {
             isSelectAll:function(){
-                return this.productList.every(function(val){ return val.select })
+                return this.productList.every(function(val) { return val.select })
             },
             getTotal:function(){
                 var _proList = this.productList.filter(function(val){return val.select}),totalPrice=0;
@@ -377,7 +342,33 @@
                 return {totalNum:_proList.length,totalPrice:totalPrice}
             }
         },
-        methods: {},
+        methods: {
+            selectProduct:function(_isSelect) {
+                for(var i=0,len = this.productList.length;i<len;i++) {
+                    this.productList[i].select= !_isSelect;
+                }
+            },
+            handleSelectAll () {
+                if(this.indeterminate) {
+                    this.selectAll = false;
+                }else {
+                    this.selectAll = !this.selectAll;
+                }
+                this.indeterminate = false;
+            },
+            checkAllChange (data) {
+                if(data.length ===2) {
+                    this.indeterminate = false;
+                    this.selectAll = true;
+                }else if(data.length>0) {
+                    this.indeterminate = true;
+                    this.selectAll = false;
+                }else {
+                    this.indeterminate = false;
+                    this.selectAll = false;
+                }
+            }
+        },
         mounted:function(){
             var _this = this;
             this.productList.map(function(item){
