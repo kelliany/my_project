@@ -349,12 +349,20 @@
                 }
             },
             handleSelectAll () {
+                var _this = this;
+            
                 if(this.indeterminate) {
                     this.selectAll = false;
+                    this.productList.map(function(item){
+                        _this.$set(item,'select',false);
+                    })
                 }else {
                     this.selectAll = !this.selectAll;
+                    this.productList.map(function(item){
+                        _this.$set(item,'select',true);
+                    })
                 }
-                this.indeterminate = false;
+                this.indeterminate = !this.indeterminate;
             },
             checkAllChange (data) {
                 console.log(data)
@@ -383,6 +391,7 @@
                 }
               } else { // 这里点击了不选择， 所以里面的item肯定是没有选全的， 直接设置 indeterminate = false
                 this.indeterminate = false;
+                this.selectAll = false;
               }
             }
         },
@@ -391,6 +400,7 @@
             this.productList.map(function(item){
                 _this.$set(item,'select',true);
             })
+            this.selectAll = true
         }
     }
 </script>
