@@ -357,16 +357,33 @@
                 this.indeterminate = false;
             },
             checkAllChange (data) {
-                if(data.length ===2) {
-                    this.indeterminate = false;
-                    this.selectAll = true;
-                }else if(data.length>0) {
-                    this.indeterminate = true;
-                    this.selectAll = false;
-                }else {
-                    this.indeterminate = false;
-                    this.selectAll = false;
+                console.log(data)
+                // if(data.length ===2) {
+                //     this.indeterminate = false;
+                //     this.selectAll = true;
+                // }else if(data.length>0) {
+                //     this.indeterminate = true;
+                //     this.selectAll = false;
+                // }else {
+                //     this.indeterminate = false;
+                //     this.selectAll = false;
+                // }
+              if (data) { //选择的话， 就需要遍历现在list里面有几个选择的了， 如果选中的数量和list.length 一致，那么全选按钮要 设置选中状态
+                var index = 0
+                for(var i=0,len = this.productList.length;i<len;i++) {
+                  // this.productList[i].selec
+                  if (this.productList[i].select) {
+                    index ++
+                  }
                 }
+                if (index === this.productList.length) {
+                  this.indeterminate = true;
+                } else {
+                  this.indeterminate = false;
+                }
+              } else { // 这里点击了不选择， 所以里面的item肯定是没有选全的， 直接设置 indeterminate = false
+                this.indeterminate = false;
+              }
             }
         },
         mounted:function(){
