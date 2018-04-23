@@ -276,12 +276,12 @@
                     <td class="td-total">
                         <p class="red-text">￥<span class="total-text">{{item.pro_price*item.pro_num}}</span>.00</p>
                     </td>
-                    <td class="td-do"><a href="javascript:;" class="product-delect">删除</a></td>
+                    <td class="td-do"><a href="javascript:;" class="product-delect" @click="deleteOneProduct(index)">删除</a></td>
                 </tr>
                 </tbody></table>
         </div>
         <div class="cart-product-info">
-            <a class="delect-product" href="javascript:;"><span></span>删除所选商品</a>
+            <a class="delect-product" href="javascript:;" @click="deleteProduct"><span></span>删除所选商品</a>
             <a class="keep-shopping" href="#"><span></span>继续购物</a>
             <a class="btn-buy fr" href="javascript:;">去结算</a>
             <p class="fr product-total">￥<span>{{getTotal.totalPrice}}</span></p>
@@ -393,6 +393,12 @@
                 this.indeterminate = false;
                 this.selectAll = false;
               }
+            },
+            deleteProduct() {
+                this.productList=this.productList.filter(function(item){return !item.select})
+            },
+            deleteOneProduct(index) {
+                this.productList.splice(index,1);
             }
         },
         mounted:function(){
