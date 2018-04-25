@@ -6,18 +6,19 @@
          <input type="text" class="text-keyword" placeholder="输入目标后，按回车确认" @keyup.13="addList" v-model="addText">
          <p>共有{{prolist.length}}个目标,{{noend==0?"全部完成了":"已完成"+(prolist.length-noend)+", 还有"+noend+"条未完成"}}</p>
          <p>
-             <input type="radio" name="chooseType" checked="true"><label>所有目标</label>
-             <input type="radio" name="chooseType"><label>已完成目标</label>
-             <input type="radio" name="chooseType"><label>未完成目标</label>
+             <input type="radio" name="chooseType" checked="true" @click="chooseList(1)"><label>所有目标</label>
+             <input type="radio" name="chooseType" @click="chooseList(2)"><label>已完成目标</label>
+             <input type="radio" name="chooseType" @click="chooseList(3)"><label>未完成目标</label>
          </p>
      </div>
      <ul>
-         <li class="li1" v-for="list in newlist">
+         <li class="li1" v-for="(list,index) in newList" :class="{'eidting':curIndex===index}">
              <div>
-                <span class="status-span"></span>
-                <span>{{list.name}}</span>
+                <span class="status-span" @click="list.status=!list.status" :class="{'status-end':list.status}"></span>
+                <span @dblclick="curIndex=index">{{list.name}}</span>
                 <span class="close" @click="delectList(index)">X</span>
              </div>
+             <input type="text" class="text2" v-model='list.name' @keyup.esc="cancelEdit(list)" @blur="edited" @focus="editBefore(list.name)" @keyup.enter="edited">
          </li>
      </ul>
  </div>
@@ -32,7 +33,10 @@ export default {
               {name: 'html5',status: false},
               {name: 'css3',status: true}
           ],
-          newList: []
+          newList: [],
+          curIndex: '',
+          beforeEditText: '',
+          curType: 0
       }
   },
   methods:{
@@ -63,6 +67,16 @@ export default {
       deleteList(index) {
           this.prolist.splice(index,1);
           this.newList=this.prolist;
+      },
+      editBefore(name) {
+          this.beforeEditText=name;
+      },
+      edited() {
+          this.curIndex="";
+      },
+      cancelEdit(val) {
+          val.name=this.beforeEditText;
+          this.curIndex="";
       }
   },
   computed: {
@@ -106,12 +120,21 @@ li {
 .todo h3,p {
     margin:10px;
 }
-li .type-span {
+li .status-span {
     display: block;
     width: 10px;
     height: 10px;
     background: #ccc;
-    margin: 14px 10px 0 0 ;float: left;
+    margin: 14px 10px 0 0 ;
+    float: left;
+}
+li .status-end {
+    display: block;
+    width: 10px;
+    height: 10px;
+    background: #09f;
+    margin: 14px 10px 0 0;
+    float: left;
 }
 li .close {
     position: absolute;
@@ -123,6 +146,20 @@ li .close {
     cursor: pointer;
     display: none;
     top: 0;
+}
+li .editing div {
+    display: none;   
+}
+li .text2 {
+    height: 40px;
+    padding-left: 10px;
+    box-sizing: border-box;
+    margin-left: 10px;
+    width:80%;
+    display: none;
+}
+li .editing .text2 {
+    display: block;
 }
 li:hover {
     border: 1px solid #09f;
