@@ -12,13 +12,13 @@
          </p>
      </div>
      <ul>
-         <li class="li1" v-for="(list,index) in newList" :class="{'eidting':curIndex===index}">
+         <li class="li1" v-for="(list,index) in newList" :class="{'editing':curIndex===index}">
              <div>
                 <span class="status-span" @click="list.status=!list.status" :class="{'status-end':list.status}"></span>
                 <span @dblclick="curIndex=index">{{list.name}}</span>
-                <span class="close" @click="delectList(index)">X</span>
+                <span class="close" @click="deleteList(index)">X</span>
              </div>
-             <input type="text" class="text2" v-model='list.name' @keyup.esc="cancelEdit(list)" @blur="edited" @focus="editBefore(list.name)" @keyup.enter="edited">
+             <input type="text" class="text2" v-model='list.name' @keyup.esc="cancelEdit(list)" @blur="edited" @focus="editBefore(list.name)" @keyup.enter="edited" v-focus>
          </li>
      </ul>
  </div>
@@ -88,7 +88,14 @@ export default {
   },
   mounted(){
       this.newList=this.prolist;
-  }
+  },
+  directives: {
+        focus: {
+            update(el) {
+                el.focus();
+            }
+        }
+    }
   
 }
 </script>
@@ -147,10 +154,10 @@ li .close {
     display: none;
     top: 0;
 }
-li .editing div {
+.editing div {
     display: none;   
 }
-li .text2 {
+.text2 {
     height: 40px;
     padding-left: 10px;
     box-sizing: border-box;
@@ -158,7 +165,7 @@ li .text2 {
     width:80%;
     display: none;
 }
-li .editing .text2 {
+.editing .text2 {
     display: block;
 }
 li:hover {

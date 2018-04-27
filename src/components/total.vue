@@ -407,6 +407,7 @@
                 _this.$set(item,'select',true);
             })
             this.selectAll = true
-        }
+        },
+        
     }
 </script>
